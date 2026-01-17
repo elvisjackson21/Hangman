@@ -1,4 +1,4 @@
-from getpass import getpass
+from pwinput import pwinput
 
 secret_word = ""
 secret_letter_list = list(secret_word)
@@ -18,12 +18,12 @@ def play_again():
             continue_game = input("Invalid input enter yes or no: ")
 
 def check_word():
+    word = pwinput("Player one enter a word: ", "*").lower()
     while True:
-        word = getpass(input("Player one enter a word: ").lower())
-        if  word.isalpha() or len(word) >= 3:
+        if  word.isalpha() and len(word) >= 3:
             return word
         else:
-            word = input("Invalid input, please enter a word: ")
+            word = pwinput("Invalid input, please enter a word: ", "*")
 
 def print_progress():
     for letter in secret_word:  # for each letter
@@ -36,19 +36,17 @@ def print_progress():
 def take_guess():
     chosen_letter = input("Player two guess a letter: ").lower()
     while True:
-        if not chosen_letter.isalpha() or len(chosen_letter) > 1:
-            chosen_letter = input("Invalid input, please enter a letter: ")
-        else:
+        if chosen_letter.isalpha() and len(chosen_letter) == 1:
             guess_letters.append(chosen_letter)
-            break
+            return chosen_letter
+        else:
+            chosen_letter = input("Invalid input, please enter a letter: ")
 
-    return chosen_letter
-
-def check_guess(guess):
+def check_guess(guess, the_word):
     if guess in guess_letters and len(guess_letters) <= 0:
         print(f"You've guessed the letter: {guess} already.")
         return True
-    elif guess in secret_word:
+    elif guess in the_word:
         print(f"You've guessed the letter: {guess} and it's correct!")
         print_progress()
         return True
@@ -58,10 +56,11 @@ def check_guess(guess):
         print(f"Only {(hanged_man - body_parts)} chance left.")
         return False
 
-
 print("lets play Hangman!")
 while playing:
     secret_word = check_word()
+    #print(secret_word)
+    #check_word(secret_word)
 
     while playing:
         if body_parts > hanged_man:
@@ -87,7 +86,7 @@ while playing:
                 break
             else:
                 playing = False
-        elif not check_guess(take_guess()):
+        elif not check_guess(take_guess(), secret_word):
             body_parts += 1
             #print(body_parts)
         elif all(char in guess_letters for char in secret_word):
