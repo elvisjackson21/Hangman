@@ -19,7 +19,7 @@ def play_again():
 
 def check_word():
     while True:
-        word = input("Player one enter a word: ").lower()
+        word = getpass(input("Player one enter a word: ").lower())
         if  word.isalpha() or len(word) >= 3:
             return word
         else:
