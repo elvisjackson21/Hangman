@@ -59,9 +59,6 @@ def check_guess(guess, the_word):
 print("lets play Hangman!")
 while playing:
     secret_word = check_word()
-    #print(secret_word)
-    #check_word(secret_word)
-
     while playing:
         if body_parts > hanged_man:
             print("     _______\n"
@@ -83,6 +80,7 @@ while playing:
                   f"The word was '{secret_word}'.")
             if play_again():
                 guess_letters.remove(guess_letters[0])
+                secret_word = ""
                 break
             else:
                 playing = False
@@ -93,6 +91,7 @@ while playing:
             print("You Win!!!")
             if play_again():
                 guess_letters.remove(guess_letters[0])
+                secret_word = ""
                 break
             else:
                 playing = False
