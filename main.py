@@ -42,16 +42,16 @@ def take_guess():
         else:
             chosen_letter = input("Invalid input, please enter a letter: ")
 
-def check_guess(guess, the_word):
-    if guess in guess_letters and len(guess_letters) <= 0:
-        print(f"You've guessed the letter: {guess} already.")
+def check_guess(guess, the_word, guessed):
+    if guessed.count(guess) > 1:
+        print(f"You've guessed the letter {guess} already.")
         return True
     elif guess in the_word:
-        print(f"You've guessed the letter: {guess} and it's correct!")
+        print(f"You've guessed the letter {guess} and it's correct!")
         print_progress()
         return True
     else:
-        print(f"You've guessed the letter: {guess} and it's incorrect!")
+        print(f"You've guessed the letter {guess} and it's incorrect!")
         print_progress()
         print(f"Only {(hanged_man - body_parts)} chance left.")
         return False
@@ -79,18 +79,20 @@ while playing:
             print(f"You lose!\n"
                   f"The word was '{secret_word}'.")
             if play_again():
-                guess_letters.remove(guess_letters[0])
+                guess_letters.clear()
+                body_parts = 0
                 secret_word = ""
                 break
             else:
                 playing = False
-        elif not check_guess(take_guess(), secret_word):
+        elif not check_guess(take_guess(), secret_word, guess_letters):
             body_parts += 1
             #print(body_parts)
         elif all(char in guess_letters for char in secret_word):
             print("You Win!!!")
             if play_again():
-                guess_letters.remove(guess_letters[0])
+                guess_letters.clear()
+                body_parts = 0
                 secret_word = ""
                 break
             else:
